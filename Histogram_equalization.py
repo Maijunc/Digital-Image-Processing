@@ -25,8 +25,8 @@ class HistogramEqualization(object):
         matplotlib.rcParams['font.family'] = font_prop.get_name()
         matplotlib.rcParams['axes.unicode_minus'] = False
 
-        if not os.path.exists('./result/'):
-            os.makedirs('./result/')
+        if not os.path.exists('./result/histogramEqualization'):
+            os.makedirs('./result/histogramEqualization')
 
     def resize(self, size: tuple = (64, 64)):
         self.OriginalImg = cv2.resize(self.OriginalImg, size)
@@ -41,10 +41,10 @@ class HistogramEqualization(object):
         plt.ylabel('频数')
         plt.plot(self.Histogram[0])
         plt.title('原始图片直方图')
-        plt.savefig('./result/origin_histogram.jpg')
+        plt.savefig('./result/histogramEqualization/origin_histogram.jpg')
 
         # 存储原始图片
-        cv2.imwrite('./result/origin_img.jpg', self.OriginalImg)
+        cv2.imwrite('./result/histogramEqualization/origin_img.jpg', self.OriginalImg)
 
     def draw_cd_f(self):
         # 累加直方图，得到累计分布函数，并绘制图像
@@ -69,9 +69,9 @@ class HistogramEqualization(object):
         plt.ylabel('概率')
         plt.title('累积分布函数图像')
         plt.plot(range(256), self.Cumulative_distribution[0, :], color='green', linewidth=0.5)
-        plt.savefig('./result/cdf.jpg')
+        plt.savefig('./result/histogramEqualization/cdf.jpg')
 
-    def equalization(self, filename='./result/new_img.jpg'):
+    def equalization(self, filename='./result/histogramEqualization/new_img.jpg'):
         """
         利用计算得到的累积分布函数对原始图像像素进行均衡化，得到映射函数
         :return: None
@@ -95,7 +95,7 @@ class HistogramEqualization(object):
                 self.NewImg[row][col] = f[0][self.NewImg[row][col]]
         cv2.imwrite(filename, self.NewImg)
 
-    def draw_new_histogram(self, filename='./result/new_histogram.jpg'):
+    def draw_new_histogram(self, filename='./result/histogramEqualization/histogramEqualizationnew_histogram.jpg'):
         """绘制新图片的直方图"""
         # 计算像素点，得到原始图片直方图
         height = self.OriginalImg.shape[0]
@@ -110,4 +110,4 @@ class HistogramEqualization(object):
         plt.ylabel('频数')
         plt.plot(self.NewHistogram[0])
         plt.title('均衡化后的图片直方图')
-        plt.savefig('./result/new_histogram.jpg')
+        plt.savefig('./result/histogramEqualization/new_histogram.jpg')
