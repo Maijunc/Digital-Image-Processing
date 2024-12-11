@@ -63,6 +63,30 @@ class TransformEnhance(object):
 
         return threshold
 
+    def iteration_thresholding(self, image, max_iterations=100, threshold=0):
+        # 计算直方图  用_来占位忽略掉第二个返回值
+        histogram, _ = np.histogram(image, bins=256, range=(0, 256))
+
+        # 初始化阈值
+        current_threshold = threshold if threshold > 0 else image.mean()
+
+        for i in range(max_iterations):
+            # 根据当前阈值分割图像
+            foreground = image[image > current_threshold]
+            background = image[image <= current_threshold]
+
+            # 计算新阈值
+            new_threshold = (foreground.mean() + background.mean()) / 2
+
+            # 如果阈值没有改变，跳出循环
+            if abs(new_threshold - current_threshold) < 1e-2:
+                break
+
+            current_threshold = new_threshold
+
+        return current_threshold
+
+
     def gaussian_kernel(self, size, sigma):
         """生成高斯核"""
         kernel = np.zeros((size, size))
