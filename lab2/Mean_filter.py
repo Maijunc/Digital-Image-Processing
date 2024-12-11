@@ -10,8 +10,8 @@ class MeanFilter(object):
         self.greyImg = cv2.cvtColor(self.originalImg, cv2.COLOR_BGR2GRAY)
 
 
-        if not os.path.exists('./result/meanFilter'):
-            os.makedirs('./result/meanFilter')
+        if not os.path.exists('../result/meanFilter'):
+            os.makedirs('../result/meanFilter')
 
     def ArithmeticMeanFilter(self, K_size = 3, filename='./result/meanFilter/arithmeticMeanFilter.jpg'):
         H = self.originalImg.shape[0]
